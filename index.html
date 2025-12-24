@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz Navidad 🎄</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,.10);
+      --glass2: rgba(255,255,255,.16);
+      --txt: rgba(255,255,255,.92);
+      --txt2: rgba(255,255,255,.72);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; min-height:100vh; overflow:hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--txt);
+      background: radial-gradient(1200px 800px at 20% 10%, #2a7fff33, transparent 60%),
+                  radial-gradient(1000px 800px at 80% 20%, #ff4d6d22, transparent 55%),
+                  radial-gradient(900px 700px at 60% 90%, #00ffcc22, transparent 60%),
+                  linear-gradient(120deg, #0b1020, #101a3a 50%, #0b1020);
+    }
+    .wrap{
+      position:relative;
+      width:min(880px, 92vw);
+      margin: 8vh auto 0;
+      padding: 28px;
+      background: linear-gradient(180deg, var(--glass2), var(--glass));
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    h1{
+      margin:0 0 10px; font-size: clamp(34px, 5vw, 54px);
+      letter-spacing: .3px;
+    }
+    p{ margin: 0 0 16px; color: var(--txt2); font-size: 16px; line-height: 1.55; }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
+    button{
+      border:0; cursor:pointer;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.12);
+      color: var(--txt);
+      font-weight: 650;
+      letter-spacing: .2px;
+      transition: transform .08s ease, background .2s ease;
+    }
+    button:hover{ background: rgba(255,255,255,.18); }
+    button:active{ transform: scale(.98); }
+    .primary{
+      background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .card{
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:none;
+    }
+    .list{ margin: 10px 0 0; padding-left: 18px; color: var(--txt2); }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: var(--txt2);
+      font-size: 13px;
+    }
+
+    /* nieve */
+    canvas{ position:fixed; inset:0; z-index:-1; }
+
+    /* mini modal */
+    .modal{
+      position:fixed; inset:0; display:none;
+      align-items:center; justify-content:center;
+      background: rgba(0,0,0,.55);
+      padding: 18px;
+    }
+    .modal > .box{
+      width:min(640px, 94vw);
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.10));
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      padding: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    .box h2{ margin: 2px 0 8px; font-size: 22px; }
+    .close{ float:right; opacity:.9; }
+    .footer{
+      margin-top: 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      color: var(--txt2); font-size: 13px;
+    }
+    a{ color: var(--txt); }
+  </style>
+</head>
+<body>
+  <canvas id="snow"></canvas>
+
+  <div class="wrap">
+    <div class="badge">🎁 Sorpresa navideña • hecha por tu nerd favorito</div>
+    <h1>Feliz Navidad, <span id="name">mi amor</span> 🎄✨</h1>
+    <p>
+      Hoy quería regalarte algo distinto: un pedacito de “mi mundo” convertido en algo para ti.
+      Gracias por hacer mi año mucho más bonito.
+    </p>
+
+    <div class="row">
+      <button class="primary" id="btnReveal">Abrir sorpresa</button>
+      <button id="btnReasons">Ver 7 razones</button>
+      <button id="btnSecret">Modo secreto</button>
+      <button id="btnMusic">Música: OFF</button>
+    </div>
+
+    <div class="card" id="revealCard">
+      <p style="margin-bottom:10px">
+        <b>Mensaje:</b> Te deseo una Navidad llena de paz, risas y sueños nuevos.
+        Y yo quiero estar ahí para celebrarlos contigo. ❤️
+      </p>
+      <p class="badge" id="since">⏳ Contando…</p>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="box">
+      <button class="close" id="btnClose">Cerrar ✖</button>
+      <h2 id="modalTitle">Sorpresa</h2>
+      <div id="modalBody"></div>
+      <div class="footer">
+        <span>Tip: prueba escribir “2025” en el teclado 😉</span>
+        <span>🎅🎄✨</span>
+      </div>
+    </div>
+  </div>
+
+  <audio id="audio" preload="auto">
+    <!-- Música opcional: puedes reemplazar esto por un archivo local mp3 si quieres -->
+  </audio>
+
+  <script>
+    // 1) Personaliza aquí:
+    const NOMBRE = "Valeria";         // <-- cambia el nombre
+    const FECHA_INICIO = "2025-12-01"; // <-- cambia a la fecha que quieras (YYYY-MM-DD)
+
+    // 2) Set name
+    document.getElementById("name").textContent = NOMBRE;
+
+    // 3) Modal helpers
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const openModal = (title, html) => {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = html;
+      modal.style.display = "flex";
+    };
+    const closeModal = () => modal.style.display = "none";
+    document.getElementById("btnClose").onclick = closeModal;
+    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+
+    // 4) Reveal card + counter
+    const revealCard = document.getElementById("revealCard");
+    document.getElementById("btnReveal").onclick = () => {
+      revealCard.style.display = (revealCard.style.display === "block") ? "none" : "block";
+    };
+
+    const sinceEl = document.getElementById("since");
+    function updateSince(){
+      const start = new Date(FECHA_INICIO + "T00:00:00");
+      const now = new Date();
+      const diff = now - start;
+      const days = Math.max(0, Math.floor(diff / (1000*60*60*24)));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const mins = Math.floor((diff / (1000*60)) % 60);
+      sinceEl.textContent = `⏳ Desde ${FECHA_INICIO}: ${days} días, ${hours} horas, ${mins} minutos`;
+    }
+    updateSince();
+    setInterval(updateSince, 30_000);
+
+    // 5) Reasons
+    document.getElementById("btnReasons").onclick = () => {
+      openModal("7 razones por las que me haces feliz 🎄", `
+        <ul class="list">
+          <li>Tu forma de ver lo bueno en las cosas.</li>
+          <li>Cómo me calmas sin darte cuenta.</li>
+          <li>Tu risa (mi sonido favorito).</li>
+          <li>Que me inspiras a ser mejor.</li>
+          <li>Lo fácil que es hablar contigo.</li>
+          <li>Tu cariño en los detalles.</li>
+          <li>Porque contigo, todo se siente hogar.</li>
+        </ul>
+        <p style="margin-top:12px;color:rgba(255,255,255,.75)">
+          (Puedes editar estas razones para que sean 100% tuyas)
+        </p>
+      `);
+    };
+
+    // 6) Secret mode
+    document.getElementById("btnSecret").onclick = () => {
+      openModal("Modo secreto 🔐", `
+        <p>Ok, nerd mode:</p>
+        <p style="color:rgba(255,255,255,.75)">
+          Si el amor fuese un modelo, tú serías mi variable más significativa.
+          Y no hay overfitting cuando lo que siento es real. ❤️
+        </p>
+      `);
+    };
+
+    // 7) Keyboard easter egg
+    let buffer = "";
+    window.addEventListener("keydown", (e) => {
+      buffer = (buffer + e.key).slice(-4);
+      if(buffer === "2025"){
+        openModal("Easter egg ✨", `
+          <p style="color:rgba(255,255,255,.85)">
+            Plot twist: lo mejor del 2025 fuiste tú. 🎁
+          </p>
+        `);
+      }
+    });
+
+    // 8) Snow animation
+    const canvas = document.getElementById("snow");
+    const ctx = canvas.getContext("2d");
+    let W, H, flakes;
+
+    function resize(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      flakes = Array.from({length: Math.min(160, Math.floor(W*H/12000))}, () => ({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: 1 + Math.random()*2.2,
+        vy: 0.6 + Math.random()*1.3,
+        vx: -0.4 + Math.random()*0.8,
+        a: 0.35 + Math.random()*0.45
+      }));
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+      for(const f of flakes){
+        f.y += f.vy;
+        f.x += f.vx;
+        if(f.y > H+10){ f.y = -10; f.x = Math.random()*W; }
+        if(f.x < -10) f.x = W+10;
+        if(f.x > W+10) f.x = -10;
+        ctx.globalAlpha = f.a;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    // 9) Music toggle (opcional)
+    const audio = document.getElementById("audio");
+    let musicOn = false;
+    const btnMusic = document.getElementById("btnMusic");
+
+    // Si quieres música: descarga un mp3 (por ejemplo "song.mp3") y ponlo en la misma carpeta,
+    // luego descomenta estas 2 líneas:
+    // audio.src = "song.mp3";
+    // audio.loop = true;
+
+    btnMusic.onclick = async () => {
+      try{
+        if(!audio.src){
+          openModal("Música 🎵", `<p>Si quieres música, pon un archivo <b>song.mp3</b> en la carpeta y descomenta las líneas en el código.</p>`);
+          return;
+        }
+        musicOn = !musicOn;
+        if(musicOn){ await audio.play(); btnMusic.textContent = "Música: ON"; }
+        else { audio.pause(); btnMusic.textContent = "Música: OFF"; }
+      }catch(err){
+        openModal("Ups 😅", `<p>El navegador bloqueó autoplay. Dale click de nuevo y debería funcionar.</p>`);
+      }
+    };
+  </script>
+</body>
+</html>

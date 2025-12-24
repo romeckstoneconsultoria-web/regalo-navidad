@@ -3,245 +3,481 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feliz Navidad 🎄</title>
+  <title>Feliz Navidad Babee!! 🎄✨</title>
+  <meta name="theme-color" content="#0b1020" />
   <style>
     :root{
+      --bg1:#070b18;
+      --bg2:#0f1b3d;
       --glass: rgba(255,255,255,.10);
       --glass2: rgba(255,255,255,.16);
-      --txt: rgba(255,255,255,.92);
-      --txt2: rgba(255,255,255,.72);
+      --stroke: rgba(255,255,255,.18);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --shadow: 0 24px 70px rgba(0,0,0,.42);
+      --radius: 24px;
     }
-    *{ box-sizing:border-box; }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body{
-      margin:0; min-height:100vh; overflow:hidden;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--txt);
-      background: radial-gradient(1200px 800px at 20% 10%, #2a7fff33, transparent 60%),
-                  radial-gradient(1000px 800px at 80% 20%, #ff4d6d22, transparent 55%),
-                  radial-gradient(900px 700px at 60% 90%, #00ffcc22, transparent 60%),
-                  linear-gradient(120deg, #0b1020, #101a3a 50%, #0b1020);
+      margin:0;
+      overflow-x:hidden;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(255,90,132,.18), transparent 60%),
+        radial-gradient(1100px 800px at 85% 20%, rgba(76,181,255,.18), transparent 58%),
+        radial-gradient(900px 700px at 55% 95%, rgba(97,255,202,.14), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 55%, var(--bg1));
     }
-    .wrap{
-      position:relative;
-      width:min(880px, 92vw);
-      margin: 8vh auto 0;
+
+    /* Background sparkle/bokeh */
+    .bokeh{
+      position: fixed; inset: 0; z-index: -3;
+      filter: blur(0.2px);
+      opacity: .55;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.09) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 35%, rgba(255,255,255,.10) 0 2px, transparent 3px),
+        radial-gradient(circle at 35% 75%, rgba(255,255,255,.08) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 80%, rgba(255,255,255,.08) 0 2px, transparent 3px);
+      animation: floatBokeh 14s ease-in-out infinite alternate;
+    }
+    @keyframes floatBokeh{
+      from { transform: translateY(0px); }
+      to   { transform: translateY(-10px); }
+    }
+
+    /* Snow canvas */
+    canvas#snow{
+      position: fixed; inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .9;
+    }
+
+    /* Soft vignette */
+    .vignette{
+      position: fixed; inset: 0; z-index: -1;
+      pointer-events:none;
+      background: radial-gradient(1200px 800px at 50% 20%, transparent 40%, rgba(0,0,0,.38) 100%);
+    }
+
+    .container{
+      width: min(980px, 92vw);
+      margin: 6.5vh auto 6vh;
+      padding: 22px;
+    }
+
+    .hero{
+      position: relative;
       padding: 28px;
+      border-radius: var(--radius);
       background: linear-gradient(180deg, var(--glass2), var(--glass));
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 22px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
     }
-    h1{
-      margin:0 0 10px; font-size: clamp(34px, 5vw, 54px);
-      letter-spacing: .3px;
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 260px at 18% 10%, rgba(255,90,132,.22), transparent 60%),
+        radial-gradient(520px 240px at 85% 15%, rgba(76,181,255,.22), transparent 60%),
+        radial-gradient(520px 260px at 55% 110%, rgba(97,255,202,.16), transparent 60%);
+      z-index:0;
+      pointer-events:none;
+      opacity:.85;
     }
-    p{ margin: 0 0 16px; color: var(--txt2); font-size: 16px; line-height: 1.55; }
-    .row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
-    button{
-      border:0; cursor:pointer;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.12);
-      color: var(--txt);
-      font-weight: 650;
-      letter-spacing: .2px;
-      transition: transform .08s ease, background .2s ease;
-    }
-    button:hover{ background: rgba(255,255,255,.18); }
-    button:active{ transform: scale(.98); }
-    .primary{
-      background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
-      border: 1px solid rgba(255,255,255,.18);
-    }
-    .card{
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      display:none;
-    }
-    .list{ margin: 10px 0 0; padding-left: 18px; color: var(--txt2); }
+
+    .hero > * { position: relative; z-index: 1; }
+
     .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 12px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
-      color: var(--txt2);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: .2px;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 16px;
+      max-width: 78ch;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card{
+      grid-column: span 12;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+      padding: 18px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+      transition: transform .18s ease, background .2s ease, border-color .2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover{
+      transform: translateY(-3px);
+      background: rgba(0,0,0,.22);
+      border-color: rgba(255,255,255,.22);
+    }
+
+    .card:active{ transform: translateY(-1px) scale(.99); }
+
+    .cardTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .cardTitle{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 760;
+      letter-spacing: .2px;
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .pill{
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      white-space: nowrap;
+    }
+
+    .cardDesc{
+      margin: 10px 0 0;
+      color: var(--muted2);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 70ch;
+    }
+
+    .hint{
+      margin-top: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      color: var(--muted2);
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+
+    .hint strong{ color: var(--text); font-weight: 700; }
+
+    /* responsive cards */
+    @media (min-width: 760px){
+      .card:nth-child(1){ grid-column: span 4; }
+      .card:nth-child(2){ grid-column: span 4; }
+      .card:nth-child(3){ grid-column: span 4; }
+    }
+
+    /* Modal */
+    .modal{
+      position: fixed; inset: 0;
+      display:none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,.55);
+      z-index: 50;
+    }
+    .modal.show{ display:flex; }
+
+    .sheet{
+      width: min(720px, 95vw);
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.10));
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      transform: translateY(10px) scale(.98);
+      opacity: 0;
+      animation: popIn .22s ease forwards;
+    }
+    @keyframes popIn{
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .sheetHeader{
+      padding: 16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+    }
+
+    .sheetHeader h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .closeBtn{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.88);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: background .2s ease, transform .08s ease;
+    }
+    .closeBtn:hover{ background: rgba(255,255,255,.14); }
+    .closeBtn:active{ transform: scale(.98); }
+
+    .sheetBody{
+      padding: 18px;
+      color: rgba(255,255,255,.86);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .sheetBody p{
+      margin: 0 0 12px;
+      color: rgba(255,255,255,.82);
+    }
+
+    .reasons{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.78);
+    }
+    .reasons li{ margin: 8px 0; }
+
+    .footerNote{
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,.62);
       font-size: 13px;
     }
 
-    /* nieve */
-    canvas{ position:fixed; inset:0; z-index:-1; }
-
-    /* mini modal */
-    .modal{
-      position:fixed; inset:0; display:none;
-      align-items:center; justify-content:center;
-      background: rgba(0,0,0,.55);
-      padding: 18px;
+    /* Focus ring for accessibility */
+    .card:focus-visible, .closeBtn:focus-visible{
+      outline: 3px solid rgba(76,181,255,.55);
+      outline-offset: 3px;
     }
-    .modal > .box{
-      width:min(640px, 94vw);
-      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.10));
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 22px;
-      padding: 18px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-    .box h2{ margin: 2px 0 8px; font-size: 22px; }
-    .close{ float:right; opacity:.9; }
-    .footer{
-      margin-top: 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      color: var(--txt2); font-size: 13px;
-    }
-    a{ color: var(--txt); }
   </style>
 </head>
+
 <body>
+  <div class="bokeh"></div>
   <canvas id="snow"></canvas>
+  <div class="vignette"></div>
 
-  <div class="wrap">
-    <div class="badge">🎁 Sorpresa navideña • hecha por tu nerd favorito</div>
-    <h1>Feliz Navidad, <span id="name">mi amor</span> 🎄✨</h1>
-    <p>
-      Hoy quería regalarte algo distinto: un pedacito de “mi mundo” convertido en algo para ti.
-      Gracias por hacer mi año mucho más bonito.
-    </p>
+  <main class="container">
+    <section class="hero">
+      <span class="badge">🎁 Un regalito digital • hecho con cariño</span>
 
-    <div class="row">
-      <button class="primary" id="btnReveal">Abrir sorpresa</button>
-      <button id="btnReasons">Ver 7 razones</button>
-      <button id="btnSecret">Modo secreto</button>
-      <button id="btnMusic">Música: OFF</button>
-    </div>
+      <h1>Feliz Navidad Babee!! 🎄✨</h1>
 
-    <div class="card" id="revealCard">
-      <p style="margin-bottom:10px">
-        <b>Mensaje:</b> Te deseo una Navidad llena de paz, risas y sueños nuevos.
-        Y yo quiero estar ahí para celebrarlos contigo. ❤️
+      <p class="subtitle">
+        Si bien hoy no pudimos estar juntos, de todas formas quisiera que hoy recibas un presente de mi parte,
+        aparte de los que te daré luego jeje, de verdad que no tengo palabras más que decirte gracias por haber aparecido en mi vida,
+        te has vuelto alguien tan importante y especial para mi que ya no hay momento en el que no piense en estar contigo,
+        y si bien no me alcanzaría una página para escribir todo lo que siento por ti, te lo puedo resumir en estas 3 opciones.
       </p>
-      <p class="badge" id="since">⏳ Contando…</p>
-    </div>
-  </div>
 
-  <div class="modal" id="modal">
-    <div class="box">
-      <button class="close" id="btnClose">Cerrar ✖</button>
-      <h2 id="modalTitle">Sorpresa</h2>
-      <div id="modalBody"></div>
-      <div class="footer">
-        <span>Tip: prueba escribir “2025” en el teclado 😉</span>
-        <span>🎅🎄✨</span>
+      <div class="grid" aria-label="Opciones">
+        <div class="card" id="optReasons" role="button" tabindex="0">
+          <div class="cardTop">
+            <h3 class="cardTitle">💝 Ver 5 razones</h3>
+            <span class="pill">Click para ver</span>
+          </div>
+          <p class="cardDesc">
+            Las 5 cositas que me encantan de ti (y que me tienen perdido 🙈).
+          </p>
+        </div>
+
+        <div class="card" id="optPromise" role="button" tabindex="0">
+          <div class="cardTop">
+            <h3 class="cardTitle">🤍 Promesa</h3>
+            <span class="pill">Click para leer</span>
+          </div>
+          <p class="cardDesc">
+            Una promesa simple, pero con todo mi corazón.
+          </p>
+        </div>
+
+        <div class="card" id="optSurprise" role="button" tabindex="0">
+          <div class="cardTop">
+            <h3 class="cardTitle">🎄 Sorpresa</h3>
+            <span class="pill">Click para abrir</span>
+          </div>
+          <p class="cardDesc">
+            Ok… hay reglas 🤭 pero te va a encantar.
+          </p>
+        </div>
       </div>
+
+      <div class="hint">
+        <span>Tip: abre cada opción con calma… ❤️</span>
+        <span><strong>De:</strong> tu nerd enamorado 🧠💘</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="sheetHeader">
+        <h2 id="modalTitle">Título</h2>
+        <button class="closeBtn" id="closeBtn" aria-label="Cerrar">Cerrar ✖</button>
+      </div>
+      <div class="sheetBody" id="modalBody"></div>
     </div>
   </div>
-
-  <audio id="audio" preload="auto">
-    <!-- Música opcional: puedes reemplazar esto por un archivo local mp3 si quieres -->
-  </audio>
 
   <script>
-    // 1) Personaliza aquí:
-    const NOMBRE = "Valeria";         // <-- cambia el nombre
-    const FECHA_INICIO = "2025-12-01"; // <-- cambia a la fecha que quieras (YYYY-MM-DD)
-
-    // 2) Set name
-    document.getElementById("name").textContent = NOMBRE;
-
-    // 3) Modal helpers
+    // ---------- Modal helpers ----------
     const modal = document.getElementById("modal");
     const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBody");
-    const openModal = (title, html) => {
+    const modalBody  = document.getElementById("modalBody");
+    const closeBtn   = document.getElementById("closeBtn");
+
+    function openModal(title, html){
       modalTitle.textContent = title;
       modalBody.innerHTML = html;
-      modal.style.display = "flex";
-    };
-    const closeModal = () => modal.style.display = "none";
-    document.getElementById("btnClose").onclick = closeModal;
-    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
-
-    // 4) Reveal card + counter
-    const revealCard = document.getElementById("revealCard");
-    document.getElementById("btnReveal").onclick = () => {
-      revealCard.style.display = (revealCard.style.display === "block") ? "none" : "block";
-    };
-
-    const sinceEl = document.getElementById("since");
-    function updateSince(){
-      const start = new Date(FECHA_INICIO + "T00:00:00");
-      const now = new Date();
-      const diff = now - start;
-      const days = Math.max(0, Math.floor(diff / (1000*60*60*24)));
-      const hours = Math.floor((diff / (1000*60*60)) % 24);
-      const mins = Math.floor((diff / (1000*60)) % 60);
-      sinceEl.textContent = `⏳ Desde ${FECHA_INICIO}: ${days} días, ${hours} horas, ${mins} minutos`;
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      closeBtn.focus();
     }
-    updateSince();
-    setInterval(updateSince, 30_000);
+    function closeModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+    }
 
-    // 5) Reasons
-    document.getElementById("btnReasons").onclick = () => {
-      openModal("7 razones por las que me haces feliz 🎄", `
-        <ul class="list">
-          <li>Tu forma de ver lo bueno en las cosas.</li>
-          <li>Cómo me calmas sin darte cuenta.</li>
-          <li>Tu risa (mi sonido favorito).</li>
-          <li>Que me inspiras a ser mejor.</li>
-          <li>Lo fácil que es hablar contigo.</li>
-          <li>Tu cariño en los detalles.</li>
-          <li>Porque contigo, todo se siente hogar.</li>
-        </ul>
-        <p style="margin-top:12px;color:rgba(255,255,255,.75)">
-          (Puedes editar estas razones para que sean 100% tuyas)
-        </p>
-      `);
-    };
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+    window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
-    // 6) Secret mode
-    document.getElementById("btnSecret").onclick = () => {
-      openModal("Modo secreto 🔐", `
-        <p>Ok, nerd mode:</p>
-        <p style="color:rgba(255,255,255,.75)">
-          Si el amor fuese un modelo, tú serías mi variable más significativa.
-          Y no hay overfitting cuando lo que siento es real. ❤️
-        </p>
-      `);
-    };
+    // ---------- Content ----------
+    const reasonsHTML = `
+      <p style="margin-top:0">
+        Babe, si tengo que resumir por qué me gustas tanto, sería algo así… ❤️
+      </p>
+      <ol class="reasons">
+        <li><b>Tu cabello hermoso y perfecto</b> que me vuelve loco.</li>
+        <li><b>Tus ojos grandes, bonitos y muy expresivos</b>.</li>
+        <li><b>Lo fácil que es hablar contigo</b>, siento que puedo hablar de todo.</li>
+        <li><b>Lo aplicada y pasional que eres</b>, es admirable.</li>
+        <li><b>Que al margen de todo, sigues luchando por salir adelante</b>… pero ahora ten por seguro que me tienes a mí para darte una mano cuando lo necesites.</li>
+      </ol>
+      <div class="footerNote">
+        <span>🎄 Feliz Navidad, Babee!!</span>
+        <span>💘</span>
+      </div>
+    `;
 
-    // 7) Keyboard easter egg
-    let buffer = "";
-    window.addEventListener("keydown", (e) => {
-      buffer = (buffer + e.key).slice(-4);
-      if(buffer === "2025"){
-        openModal("Easter egg ✨", `
-          <p style="color:rgba(255,255,255,.85)">
-            Plot twist: lo mejor del 2025 fuiste tú. 🎁
-          </p>
-        `);
-      }
-    });
+    // Promesa (ligeramente mejorada, enfatizando “siempre estaré ahí”)
+    const promiseHTML = `
+      <p style="margin-top:0">
+        Babe… desde ese momento en que nos dijimos que sentíamos lo mismo, entendí que contigo quiero construir algo bonito.
+      </p>
+      <p>
+        <b>Te prometo que siempre voy a estar ahí para ti</b>: para celebrar lo bueno contigo, para sostenerte cuando algo pese,
+        para escucharte de verdad, cuidarte, y recordarte lo increíble que eres.
+      </p>
+      <p>
+        En las buenas y en las malas… <b>pero juntos</b>. 🤍
+      </p>
+      <div class="footerNote">
+        <span>Siempre contigo.</span>
+        <span>🫶</span>
+      </div>
+    `;
 
-    // 8) Snow animation
+    const surpriseHTML = `
+      <p style="margin-top:0">
+        Tengo más sorpresas para ti, pero vas a tener que esperar a que nos veamos en persona,
+        y para la sorpresa principal tendrás que esperar a año nuevo, sorry pero esas son las reglas jaja.
+      </p>
+      <p>
+        <b>Te quiero mucho babe</b>, te mando un beso y abrazo gigante!! 😘🤗
+      </p>
+      <div class="footerNote">
+        <span>🎁 Próximo capítulo: en persona</span>
+        <span>✨</span>
+      </div>
+    `;
+
+    // ---------- Click + keyboard support ----------
+    function clickable(el, fn){
+      el.addEventListener("click", fn);
+      el.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); fn(); }
+      });
+    }
+
+    clickable(document.getElementById("optReasons"), () => openModal("💝 Ver 5 razones", reasonsHTML));
+    clickable(document.getElementById("optPromise"),  () => openModal("🤍 Promesa", promiseHTML));
+    clickable(document.getElementById("optSurprise"), () => openModal("🎄 Sorpresa", surpriseHTML));
+
+    // ---------- Snow animation (soft) ----------
     const canvas = document.getElementById("snow");
     const ctx = canvas.getContext("2d");
-    let W, H, flakes;
+    let W=0, H=0, flakes=[];
 
     function resize(){
-      W = canvas.width = window.innerWidth;
+      W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      flakes = Array.from({length: Math.min(160, Math.floor(W*H/12000))}, () => ({
+      const density = Math.min(220, Math.floor((W*H)/11000));
+      flakes = Array.from({length: density}, () => ({
         x: Math.random()*W,
         y: Math.random()*H,
-        r: 1 + Math.random()*2.2,
-        vy: 0.6 + Math.random()*1.3,
-        vx: -0.4 + Math.random()*0.8,
-        a: 0.35 + Math.random()*0.45
+        r: 0.8 + Math.random()*2.2,
+        vy: 0.5 + Math.random()*1.4,
+        vx: -0.35 + Math.random()*0.7,
+        a: 0.22 + Math.random()*0.55
       }));
     }
     window.addEventListener("resize", resize);
@@ -252,9 +488,14 @@
       for(const f of flakes){
         f.y += f.vy;
         f.x += f.vx;
-        if(f.y > H+10){ f.y = -10; f.x = Math.random()*W; }
-        if(f.x < -10) f.x = W+10;
-        if(f.x > W+10) f.x = -10;
+
+        // gentle sway
+        f.x += Math.sin((f.y / 80)) * 0.12;
+
+        if(f.y > H + 10){ f.y = -10; f.x = Math.random()*W; }
+        if(f.x < -10) f.x = W + 10;
+        if(f.x > W + 10) f.x = -10;
+
         ctx.globalAlpha = f.a;
         ctx.beginPath();
         ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
@@ -264,30 +505,6 @@
       requestAnimationFrame(tick);
     }
     tick();
-
-    // 9) Music toggle (opcional)
-    const audio = document.getElementById("audio");
-    let musicOn = false;
-    const btnMusic = document.getElementById("btnMusic");
-
-    // Si quieres música: descarga un mp3 (por ejemplo "song.mp3") y ponlo en la misma carpeta,
-    // luego descomenta estas 2 líneas:
-    // audio.src = "song.mp3";
-    // audio.loop = true;
-
-    btnMusic.onclick = async () => {
-      try{
-        if(!audio.src){
-          openModal("Música 🎵", `<p>Si quieres música, pon un archivo <b>song.mp3</b> en la carpeta y descomenta las líneas en el código.</p>`);
-          return;
-        }
-        musicOn = !musicOn;
-        if(musicOn){ await audio.play(); btnMusic.textContent = "Música: ON"; }
-        else { audio.pause(); btnMusic.textContent = "Música: OFF"; }
-      }catch(err){
-        openModal("Ups 😅", `<p>El navegador bloqueó autoplay. Dale click de nuevo y debería funcionar.</p>`);
-      }
-    };
   </script>
 </body>
 </html>

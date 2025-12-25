@@ -3,20 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feliz Navidad Babee!! 🎄</title>
+  <title>Feliz Navidad Babee!!</title>
   <meta name="theme-color" content="#0b1020" />
   <style>
     :root{
       --bg1:#070b18;
       --bg2:#0f1b3d;
-      --glass: rgba(255,255,255,.09);
-      --glass2: rgba(255,255,255,.14);
+
+      --glass: rgba(255,255,255,.085);
+      --glass2: rgba(255,255,255,.13);
       --stroke: rgba(255,255,255,.16);
+
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.58);
-      --shadow: 0 26px 72px rgba(0,0,0,.46);
-      --radius: 26px;
+      --muted2: rgba(255,255,255,.56);
+
+      --shadow: 0 28px 80px rgba(0,0,0,.52);
+      --radius: 28px;
+
+      --accentA: rgba(76,181,255,.16);
+      --accentB: rgba(255,90,132,.14);
+      --accentC: rgba(97,255,202,.12);
     }
 
     *{ box-sizing: border-box; }
@@ -28,15 +35,15 @@
       color: var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(255,90,132,.12), transparent 62%),
-        radial-gradient(1100px 800px at 85% 18%, rgba(76,181,255,.12), transparent 60%),
-        radial-gradient(900px 700px at 55% 95%, rgba(97,255,202,.10), transparent 62%),
+        radial-gradient(1200px 800px at 12% 10%, var(--accentB), transparent 62%),
+        radial-gradient(1100px 800px at 86% 18%, var(--accentA), transparent 60%),
+        radial-gradient(900px 700px at 55% 95%, var(--accentC), transparent 64%),
         linear-gradient(135deg, var(--bg1), var(--bg2) 55%, var(--bg1));
       position: relative;
       isolation: isolate;
     }
 
-    /* Subtle animated sheen (premium, very soft) */
+    /* Animated “premium” sheen (subtle but impactful) */
     .sheen{
       position: fixed;
       inset: -35%;
@@ -44,11 +51,11 @@
       pointer-events: none;
       background: conic-gradient(from 180deg at 50% 50%,
         rgba(255,255,255,0.00),
-        rgba(255,255,255,0.035),
+        rgba(255,255,255,0.045),
         rgba(255,255,255,0.00),
-        rgba(255,255,255,0.028),
+        rgba(255,255,255,0.035),
         rgba(255,255,255,0.00));
-      animation: sheenMove 26s linear infinite;
+      animation: sheenMove 22s linear infinite;
       opacity: .55;
       filter: blur(18px);
     }
@@ -57,11 +64,11 @@
       to{ transform: rotate(360deg); }
     }
 
-    /* Soft vignette */
+    /* Vignette */
     .vignette{
       position: fixed; inset: 0; z-index: -1;
       pointer-events:none;
-      background: radial-gradient(1100px 760px at 50% 18%, transparent 42%, rgba(0,0,0,.40) 100%);
+      background: radial-gradient(1100px 760px at 50% 18%, transparent 40%, rgba(0,0,0,.46) 100%);
     }
 
     /* Snow canvas (light) */
@@ -69,41 +76,42 @@
       position: fixed; inset: 0;
       z-index: -2;
       pointer-events: none;
-      opacity: .55;
+      opacity: .5;
     }
 
+    /* Layout */
     .container{
-      width: min(980px, 92vw);
-      margin: 7.5vh auto 7vh;
+      width: min(1020px, 92vw);
+      margin: 7vh auto 7vh;
       padding: 22px;
     }
 
     .hero{
       position: relative;
-      padding: 30px;
+      padding: 34px;
       border-radius: var(--radius);
       background: linear-gradient(180deg, var(--glass2), var(--glass));
       border: 1px solid var(--stroke);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
       overflow: hidden;
     }
 
+    /* Subtle inner glow edges (impact) */
     .hero::before{
       content:"";
-      position:absolute;
-      inset:-2px;
+      position:absolute; inset:-2px;
       background:
-        radial-gradient(560px 220px at 18% 8%, rgba(255,90,132,.12), transparent 62%),
-        radial-gradient(520px 220px at 85% 14%, rgba(76,181,255,.12), transparent 62%),
-        radial-gradient(520px 240px at 55% 112%, rgba(97,255,202,.10), transparent 66%);
-      opacity:.9;
+        radial-gradient(680px 260px at 18% 6%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(620px 240px at 86% 14%, rgba(255,255,255,.05), transparent 62%),
+        radial-gradient(600px 260px at 52% 110%, rgba(255,255,255,.04), transparent 66%);
+      opacity:.85;
       pointer-events:none;
       z-index:0;
     }
-
     .hero > *{ position:relative; z-index:1; }
 
+    /* Top label */
     .badge{
       display:inline-flex;
       align-items:center;
@@ -112,51 +120,73 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
-      color: var(--muted);
+      color: rgba(255,255,255,.70);
       font-size: 13px;
-      letter-spacing: .2px;
+      letter-spacing: .22px;
 
       opacity: 0;
       transform: translateY(8px);
       animation: fadeUp .7s ease forwards .05s;
     }
+    .badgeDot{
+      width: 7px; height: 7px; border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 0 18px rgba(255,255,255,.20);
+      display:inline-block;
+    }
 
+    /* Headline */
     h1{
       margin: 14px 0 10px;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.05;
-      letter-spacing: .2px;
+      font-size: clamp(36px, 5.4vw, 62px);
+      line-height: 1.03;
+      letter-spacing: .25px;
 
       opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp .85s ease forwards .12s;
+      transform: translateY(14px);
+      animation: fadeUp .95s cubic-bezier(.2,.9,.2,1) forwards .12s;
+    }
+
+    /* Animated underline (impact, minimal) */
+    .underline{
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.55), rgba(255,255,255,.0));
+      border-radius: 999px;
+      margin: 10px 0 14px;
+      opacity: 0;
+      animation: lineGrow .9s ease forwards .32s;
+    }
+    @keyframes lineGrow{
+      to{ width: min(520px, 70%); opacity: 1; }
     }
 
     .subtitle{
       margin: 0;
       color: var(--muted);
-      line-height: 1.72;
+      line-height: 1.78;
       font-size: 16px;
-      max-width: 80ch;
+      max-width: 84ch;
 
       opacity: 0;
       transform: translateY(12px);
-      animation: fadeUp .9s ease forwards .22s;
+      animation: fadeUp .95s ease forwards .28s;
     }
 
     @keyframes fadeUp{
       to{ opacity:1; transform: translateY(0); }
     }
 
+    /* Options */
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
-      margin-top: 20px;
+      margin-top: 22px;
 
       opacity:0;
       transform: translateY(10px);
-      animation: fadeUp .85s ease forwards .32s;
+      animation: fadeUp .9s ease forwards .42s;
     }
 
     .card{
@@ -164,39 +194,40 @@
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.14);
-      padding: 18px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.24);
+      padding: 18px 18px 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.26);
       cursor: pointer;
       user-select:none;
 
-      transition: transform .16s ease, background .2s ease, border-color .2s ease;
+      transition: transform .16s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
       position: relative;
       overflow: hidden;
     }
 
-    /* subtle highlight sweep (very minimal) */
+    /* ultra-smooth highlight sweep */
     .card::after{
       content:"";
       position:absolute;
-      top:-40%;
-      left:-70%;
+      top:-45%;
+      left:-75%;
       width: 55%;
-      height: 190%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.11), transparent);
       transform: rotate(18deg);
       opacity:0;
       transition: opacity .2s ease;
     }
-    .card:hover::after{ opacity:1; animation: sweep .9s ease; }
+    .card:hover::after{ opacity:1; animation: sweep 1.0s ease; }
     @keyframes sweep{
-      from { left:-70%; }
-      to   { left:130%; }
+      from { left:-75%; }
+      to   { left:140%; }
     }
 
     .card:hover{
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       background: rgba(0,0,0,.18);
       border-color: rgba(255,255,255,.18);
+      box-shadow: 0 18px 42px rgba(0,0,0,.34);
     }
     .card:active{ transform: translateY(-1px) scale(.99); }
 
@@ -208,11 +239,8 @@
     }
 
     .cardTitle{
-      display:flex;
-      align-items:center;
-      gap: 10px;
       font-weight: 760;
-      letter-spacing: .2px;
+      letter-spacing: .22px;
       font-size: 18px;
       margin: 0;
     }
@@ -242,12 +270,12 @@
       justify-content:space-between;
       gap: 12px;
       flex-wrap: wrap;
-      color: rgba(255,255,255,.58);
+      color: rgba(255,255,255,.56);
       font-size: 13px;
 
       opacity:0;
       transform: translateY(10px);
-      animation: fadeUp .85s ease forwards .42s;
+      animation: fadeUp .9s ease forwards .56s;
     }
     .hint strong{ color: var(--text); font-weight: 700; }
 
@@ -264,21 +292,21 @@
       align-items: center;
       justify-content: center;
       padding: 18px;
-      background: rgba(0,0,0,.58);
+      background: rgba(0,0,0,.60);
       z-index: 50;
     }
     .modal.show{ display:flex; }
 
     .sheet{
-      width: min(720px, 95vw);
+      width: min(760px, 95vw);
       border-radius: 26px;
       border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
-      box-shadow: 0 30px 90px rgba(0,0,0,.58);
-      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(255,255,255,.15), rgba(255,255,255,.08));
+      box-shadow: 0 34px 110px rgba(0,0,0,.62);
+      backdrop-filter: blur(18px);
       overflow: hidden;
 
-      transform: translateY(14px) scale(.985);
+      transform: translateY(16px) scale(.985);
       opacity: 0;
       animation: popIn .20s ease forwards;
     }
@@ -300,9 +328,7 @@
       margin:0;
       font-size: 18px;
       letter-spacing:.2px;
-      display:flex;
-      align-items:center;
-      gap: 10px;
+      font-weight: 720;
     }
 
     .closeBtn{
@@ -310,7 +336,7 @@
       background: rgba(255,255,255,.06);
       color: rgba(255,255,255,.88);
       border-radius: 12px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       cursor: pointer;
       transition: background .2s ease, transform .08s ease;
     }
@@ -320,7 +346,7 @@
     .sheetBody{
       padding: 18px;
       color: rgba(255,255,255,.84);
-      line-height: 1.75;
+      line-height: 1.78;
       font-size: 15px;
     }
 
@@ -354,7 +380,7 @@
       outline-offset: 3px;
     }
 
-    /* Respect reduced motion */
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
       .sheen{ display:none; }
@@ -370,9 +396,10 @@
 
   <main class="container">
     <section class="hero">
-      <span class="badge">🎁 Un regalito digital • hecho con cariño</span>
+      <span class="badge"><span class="badgeDot"></span> Un presente digital</span>
 
-      <h1>Feliz Navidad Babee!! 🎄</h1>
+      <h1>Feliz Navidad Babee!!</h1>
+      <div class="underline" aria-hidden="true"></div>
 
       <p class="subtitle">
         Si bien hoy no pudimos estar juntos, de todas formas quisiera que hoy recibas un presente de mi parte,
@@ -388,7 +415,7 @@
             <span class="pill">Abrir</span>
           </div>
           <p class="cardDesc">
-            Un resumen de lo que más me encanta de ti.
+            Un resumen corto y sincero de lo que más me encanta de ti.
           </p>
         </div>
 
@@ -398,7 +425,7 @@
             <span class="pill">Abrir</span>
           </div>
           <p class="cardDesc">
-            Una promesa simple: estar ahí, siempre.
+            Algo simple, pero claro: estar ahí, siempre.
           </p>
         </div>
 
@@ -408,14 +435,14 @@
             <span class="pill">Abrir</span>
           </div>
           <p class="cardDesc">
-            Hay más… pero con reglas.
+            Hay más… pero con reglas (y vale la pena).
           </p>
         </div>
       </div>
 
       <div class="hint">
         <span>Tip: abre cada opción con calma.</span>
-        <span><strong>De:</strong> Rodrigo Melgarejo</span>
+        <span><strong>De:</strong> tu nerd enamorado</span>
       </div>
     </section>
   </main>
@@ -463,18 +490,18 @@
         <li><b>Tu cabello hermoso y perfecto</b> que me vuelve loco.</li>
         <li><b>Tus ojos grandes, bonitos y muy expresivos</b>.</li>
         <li><b>Lo fácil que es hablar contigo</b>, siento que puedo hablar de todo.</li>
-        <li><b>Lo aplicada y pasional que eres</b>, eres muy inteligente.</li>
+        <li><b>Lo aplicada y pasional que eres</b>, es admirable.</li>
         <li><b>Que al margen de todo, sigues luchando por salir adelante</b>… y ahora ten por seguro que me tienes a mí para darte una mano cuando lo necesites.</li>
       </ol>
       <div class="footerNote">
         <span>Feliz Navidad, Babee.</span>
-        <span>🎄</span>
+        <span>—</span>
       </div>
     `;
 
     const promiseHTML = `
       <p style="margin-top:0">
-        Babe, desde ese momento en que nos dijimos sentir lo mismo, quiero que tengas algo claro:
+        Desde ese momento en que nos dijimos sentir lo mismo, quiero que tengas algo claro:
       </p>
       <p>
         <b>Siempre voy a estar ahí para ti</b>. Para celebrar lo bueno contigo, para acompañarte cuando algo sea difícil,
@@ -485,7 +512,7 @@
       </p>
       <div class="footerNote">
         <span>Siempre.</span>
-        <span>🤍</span>
+        <span>—</span>
       </div>
     `;
 
@@ -495,11 +522,11 @@
         y para la sorpresa principal tendrás que esperar a año nuevo, sorry pero esas son las reglas jaja.
       </p>
       <p>
-        <b>Te quiero mucho babe</b>, te mando un beso y abrazo gigante!!
+        <b>Te quiero mucho babe</b>, te mando un beso y abrazo gigante.
       </p>
       <div class="footerNote">
         <span>Próximo capítulo: en persona.</span>
-        <span>✨</span>
+        <span>—</span>
       </div>
     `;
 
@@ -523,14 +550,14 @@
     function resize(){
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      const density = Math.min(140, Math.floor((W*H)/16000)); // lighter density
+      const density = Math.min(140, Math.floor((W*H)/16000));
       flakes = Array.from({length: density}, () => ({
         x: Math.random()*W,
         y: Math.random()*H,
         r: 0.6 + Math.random()*1.6,
-        vy: 0.35 + Math.random()*0.9,
+        vy: 0.35 + Math.random()*0.95,
         vx: -0.18 + Math.random()*0.36,
-        a: 0.16 + Math.random()*0.35
+        a: 0.14 + Math.random()*0.30
       }));
     }
     window.addEventListener("resize", resize);
@@ -541,7 +568,7 @@
       for(const f of flakes){
         f.y += f.vy;
         f.x += f.vx;
-        f.x += Math.sin((f.y / 110)) * 0.08;
+        f.x += Math.sin((f.y / 120)) * 0.08;
 
         if(f.y > H + 10){ f.y = -10; f.x = Math.random()*W; }
         if(f.x < -10) f.x = W + 10;
@@ -559,4 +586,5 @@
   </script>
 </body>
 </html>
+
 
